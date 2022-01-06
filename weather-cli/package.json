@@ -1,0 +1,28 @@
+{
+  "name": "weather-cli-ys",
+  "version": "1.0.0",
+  "description": "CLI for getting weather",
+  "main": "weather.js",
+  "bin": {
+    "weather": "weather.js"
+  },
+  "type": "module",
+  "man": "./README.md",
+  "scripts": {
+    "start": "node weather.js",
+    "help": "node weather.js -h",
+    "save": "node weather.js -s",
+    "token": "node weather.js -t",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "weather"
+  ],
+  "author": "Yevhen Synytsia",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.0.0",
+    "dedent-js": "^1.0.1"
+  }
+}
