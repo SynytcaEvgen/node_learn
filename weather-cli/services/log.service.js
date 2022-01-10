@@ -5,11 +5,11 @@ class PrintLog {
     constructor() { }
 
     error(err){
-    console.log(chalk.bgRed('ERROR') + ' ' + err)
+        console.log(chalk.bgRed('ERROR') + ' ' + err)
     };
 
     success(msg){
-    console.log(chalk.bgGreen('SUCCESS') + ' ' + msg)
+        console.log(chalk.bgGreen('SUCCESS') + ' ' + msg)
     }
 
     help(){
