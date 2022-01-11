@@ -10,24 +10,35 @@ import dotenv from "dotenv";
 const __filename = fileURLToPath(import.meta.url);
 dotenv.config({ path: dirname(__filename) + '/.env' });
 
-const saveToken = async (token, value) => {
+
+const saveData = async (key, value) => {
     try {
-        const res = await Storage.saveKeyValue(token, value);
+        const res = await Storage.saveKeyValue(key, value);
         if (!res) {
-            PrintLog.success('Token has be saved')
+            PrintLog.success(`${key.charAt(0).toUpperCase() + key.slice(1)} has be saved`)
         } else {
             throw new Error(res)
         }
     } catch (error) {
         PrintLog.error(error);
     }
+}
+const cheackData = async (data) => {
+    try {
+        const weather = await ApiWeather.getWeather(data); 
+
+        return true;
+
+    } catch (err) {
+        
+        return false;
+    }
 };
 
 const getForCast = async () => {
     try {
-        const weather = await ApiWeather.getWeather(process.env.TOKEN_CITY); //Mykolayiv
-
-        console.log(weather)
+        const weather = await ApiWeather.getWeather(process.env.TOKEN_CITY);
+        PrintLog.weather(weather, ApiWeather.getIcon(weather.weather[0].icon));
 
     } catch (error) {
         if (error?.response?.status == 404) {
@@ -40,18 +51,34 @@ const getForCast = async () => {
     }
     
 }
-const initCLI = () => {
+const initCLI = async () => {
     const args = getArgs(process.argv);
     
     if (args.h) { 
-        PrintLog.help();
+        return PrintLog.help();
     }
     if (args.s) { 
-        getForCast();
+    
+        if (await cheackData({ city: args.s })) {
+            return saveData(process.env.CITY, args.s);
+        } else { 
+            return PrintLog.error(`City ${args.s} don't found, could please write some any different city by default Kyiv`);
+        }
+        
+    }
+    if (args.l) { 
+        if (await cheackData({ city: args.s })) {
+            return saveData(process.env.LAND, args.l);
+        } else { 
+            return PrintLog.error(`Language ${args.s} don't found, could please write some any different language by default English`);
+        }
+        
     }
     if (args.t) { 
-        saveToken(process.env.TOKEN_NAME, args.t);
+        return saveData(process.env.TOKEN_NAME, args.t);
     }
+
+    return getForCast();
 };
 
 initCLI();

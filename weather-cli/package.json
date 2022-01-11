@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node weather.js",
     "help": "node weather.js -h",
-    "save": "node weather.js -s",
+    "city": "node weather.js -s",
+    "lang": "node weather.js -l",
     "token": "node weather.js -t",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
